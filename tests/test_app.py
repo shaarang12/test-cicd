@@ -55,7 +55,7 @@ def test_evaluate_query_endpoint(mock_model, client):
     mock_instance.generate_content.return_value = create_mock_response("Paris is the capital of France")
     mock_model.return_value = mock_instance
 
-    response = client.get('/evaluate-query')
+    response = client.get('/evaluate')
 
     assert response.status_code == 200
     data = json.loads(response.data)
