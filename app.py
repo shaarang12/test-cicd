@@ -3,6 +3,7 @@ import logging
 import google.generativeai as genai
 from dotenv import load_dotenv
 import os
+import test_cases
 app = Flask(__name__)
 
 load_dotenv()
@@ -19,41 +20,6 @@ logging.basicConfig(
         logging.StreamHandler()
     ]
 )
-
-TEST_CASES = [
-    {
-        "input": "What is the capital of France?",
-        "expected": "Paris"
-    },
-    {
-        "input": "What is 2 + 2?",
-        "expected": "4"
-    },
-    {
-        "input": "Who wrote Romeo and Juliet?",
-        "expected": "Shakespeare"
-    },
-    {
-        "input": "What is the chemical symbol for gold?",
-        "expected": "Au"
-    },
-    {
-        "input": "What planet is known as the Red Planet?",
-        "expected": "Mars"
-    }
-]
-
-SUMMARY_TEST_CASES = [
-    {
-        "input": """A paragraph is a group of sentences that develop a single idea or point of a subject. 
-        Paragraphs are a common feature of writing and are used to organize information and help readers understand the
-         main points of a piece."""
-    },
-    {
-        "input": """My name is shaarang. I am 25 years old. I have a masters degree. I am applying as a mlops data
-        engineer at syncron. I am a boy. i am from goa."""
-    }
-]
 
 
 @app.route('/query', methods=['POST'])
@@ -117,7 +83,7 @@ def evaluate_gemini():
         logging.info("\n=== Query Evaluation ===")
         successes = 0
 
-        for case in TEST_CASES:
+        for case in test_cases.TEST_CASES:
             response = model.generate_content(case["input"])
             response_text = response.text.lower()
             expected_word = case["expected"].lower()
@@ -130,11 +96,11 @@ def evaluate_gemini():
             logging.info(f"A: {response.text.strip()}")
 
         logging.info(f"\nOverall Results:")
-        logging.info(f"Matches: {successes}/{len(TEST_CASES)}")
+        logging.info(f"Matches: {successes}/{len(test_cases.TEST_CASES)}")
 
         return jsonify({
             "matches": successes,
-            "total_cases": len(TEST_CASES)
+            "total_cases": len(test_cases.TEST_CASES)
         })
 
     except Exception as e:
@@ -148,7 +114,7 @@ def evaluate_summary_performance():
         logging.info("\n=== Summary Evaluation ===")
         successes = 0
 
-        for i, case in enumerate(SUMMARY_TEST_CASES, 1):
+        for i, case in enumerate(test_cases.SUMMARY_TEST_CASES, 1):
             response = model.generate_content(
                 f"Please summarize this text concisely:\n\n{case['input']}"
             )
@@ -167,11 +133,11 @@ def evaluate_summary_performance():
             logging.info(response.text.strip())
 
         logging.info(f"\nOverall Results:")
-        logging.info(f"Successful Summaries: {successes}/{len(SUMMARY_TEST_CASES)}")
+        logging.info(f"Successful Summaries: {successes}/{len(test_cases.SUMMARY_TEST_CASES)}")
 
         return jsonify({
             "successful_summaries": successes,
-            "total_cases": len(SUMMARY_TEST_CASES)
+            "total_cases": len(test_cases.SUMMARY_TEST_CASES)
         })
 
     except Exception as e:
