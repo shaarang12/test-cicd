@@ -4,19 +4,19 @@ TEST_CASES = [
         "expected": "monday"
     },
     {
-        "input": "What is 2 + 2?",
-        "expected": "7"
+        "input": "what is the capital of india?",
+        "expected": "delhi"
     },
     {
-        "input": "Who wrote Romeo and Juliet?",
-        "expected": "Shakespeare"
+        "input": "name the three types of matter",
+        "expected": "solid"
     },
     {
-        "input": "What is the chemical symbol for gold?",
-        "expected": "Au"
+        "input": "what does H stand for in SHA256?",
+        "expected": "hash"
     },
     {
-        "input": "What planet is known as the Red Planet?",
-        "expected": "Mars"
+        "input": "complete the following. no pain no ....?",
+        "expected": "gain"
     }
 ]
